@@ -13,9 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Voice Assistant',
-      theme: ThemeData.light(useMaterial3: true)
-          .copyWith(scaffoldBackgroundColor: Pallete.whiteColor),
+      title: 'Jarvis',
+      theme: ThemeData.light(useMaterial3: true).copyWith(
+        scaffoldBackgroundColor: Pallete.whiteColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Pallete.whiteColor,
+        ),
+      ),
       home: const HomePage(),
     );
   }
