@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voice_assistant_chatgpt/feature_box.dart';
 import 'package:voice_assistant_chatgpt/pallete.dart';
 
 class HomePage extends StatefulWidget {
@@ -88,7 +89,34 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          const Column(
+            children: [
+              FeatureBox(
+                color: Pallete.firstSuggestionBoxColor,
+                headerText: 'ChatGPT',
+                descriptionText:
+                    'A smarter way to stay organized and informed with ChatGPT',
+              ),
+              FeatureBox(
+                color: Pallete.secondSuggestionBoxColor,
+                headerText: 'Dall-E',
+                descriptionText:
+                    'Get inspired and stay creative with your personal assistant pawered by Dall-E',
+              ),
+              FeatureBox(
+                color: Pallete.thirdSuggestionBoxColor,
+                headerText: 'Smart Voice Assistant',
+                descriptionText:
+                    'Get the best of both worlds with a voice assistant powered by Dall-E and ChatGPT',
+              ),
+            ],
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Pallete.firstSuggestionBoxColor,
+        onPressed: () {},
+        child: const Icon(Icons.mic),
       ),
     );
   }
