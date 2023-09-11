@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:voice_assistant_chatgpt/feature_box.dart';
@@ -14,14 +15,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final speechToText = SpeechToText();
+  final flutterTts = FlutterTts();
+
   String lastWords = '';
   final OpenAIService openAIService = OpenAIService();
+  String? generatedContent;
+  String? generatedImageUrl;
 
   @override
   void initState() {
     super.initState();
     initSpeechToText();
+    initTextToSpeech();
   }
+
+  Future<void> initTextToSpeech() async {}
 
   Future<void> initSpeechToText() async {
     await speechToText.initialize();
@@ -44,10 +52,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> systemSpeak(content) async {
+    await flutterTts.speak(content);
+  }
+
   @override
   void dispose() {
     super.dispose();
     speechToText.stop();
+    flutterTts.stop();
   }
 
   @override
@@ -101,13 +114,15 @@ class _HomePageState extends State<HomePage> {
                   topLeft: Radius.zero,
                 ),
               ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  'Good Morning, What task can I do for you ?',
+                  generatedContent == null
+                      ? 'Good Morning, What task can I do for you ?'
+                      : generatedContent!,
                   style: TextStyle(
                     color: Pallete.mainFontColor,
-                    fontSize: 25,
+                    fontSize: generatedContent == null ? 25 : 18,
                     fontFamily: 'Cera Pro',
                   ),
                 ),
@@ -162,7 +177,16 @@ class _HomePageState extends State<HomePage> {
             await startListening();
           } else if (speechToText.isListening) {
             final speech = await openAIService.isArtPromptAPI(lastWords);
-            print(speech);
+            if (speech.contains('https')) {
+              generatedImageUrl = speech;
+              generatedContent = null;
+              setState(() {});
+            } else {
+              generatedImageUrl = null;
+              generatedContent = speech;
+              await systemSpeak(speech);
+              setState(() {});
+            }
             await stopListening();
             // print(lastWords);
           } else {
