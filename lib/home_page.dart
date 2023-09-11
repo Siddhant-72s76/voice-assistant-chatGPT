@@ -160,6 +160,7 @@ class _HomePageState extends State<HomePage> {
             await startListening();
           } else if (speechToText.isListening) {
             await stopListening();
+            // print(lastWords);
           } else {
             initSpeechToText();
           }
