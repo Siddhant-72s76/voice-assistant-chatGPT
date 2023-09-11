@@ -1,1 +1,1 @@
-const openAIAPIKey = 'Add API key here';
+const openAIAPIKey = 'Add your aip key';
